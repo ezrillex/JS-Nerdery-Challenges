@@ -13,7 +13,17 @@ Invoking "readableTime(3690)" should return "01:01:30" (HH:MM:SS)
 ***** */
 
 const readableTime = (seconds) => {
-  // YOUR CODE HERE...
+  // get hours, minutes, seconds
+  let hours = Math.trunc(seconds / 60 / 60) 
+  let minutes = Math.trunc((seconds / 60) - (hours * 60))
+  let secondsLeft = seconds - (hours * 60 * 60) - (minutes * 60) 
+  
+  // display values as 2 digits
+  let dHours = hours.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+  let dMinutes = minutes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+  let dSeconds = secondsLeft.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+  
+  return `${dHours}:${dMinutes}:${dSeconds}`
 };
 
 readableTime(458);
@@ -41,7 +51,28 @@ Invoking "circularArray(2)" should return "["Island", "Japan", "Israel", "German
 const COUNTRY_NAMES = ["Germany", "Norway", "Island", "Japan", "Israel"];
 
 const circularArray = (index) => {
-  // YOUR CODE HERE...
+  let result = []
+
+  // handle index bigger than size of array
+  if(index + 1 > COUNTRY_NAMES.length) {
+    index++ // make it 1 based
+    // determine how many times the array repeats
+    let offset = Math.trunc(index / COUNTRY_NAMES.length)
+    // offset by how many it goes over
+    index -= COUNTRY_NAMES.length * offset
+    // if the index and length are equal, index = 0. 
+    // In this case the correct element is the last of the list.
+    if(index === 0) index = COUNTRY_NAMES.length
+    index-- // make it 0 based again
+  }
+
+  // add from index up
+  for (let i = index; i < COUNTRY_NAMES.length; i++) result.push(COUNTRY_NAMES[i])
+
+  //add from start to index
+  for (let i = 0; i < index; i++) result.push(COUNTRY_NAMES[i])
+
+  return result
 };
 
 circularArray(2);
@@ -70,7 +101,17 @@ The last 3 digits for the sum of powers from 1 to 10 is "317"
 ***** */
 
 const ownPower = (number, lastDigits) => {
-  // YOUR CODE HERE...
+  let sum = BigInt(0)
+
+  // add up the powers
+  for (let index = 1; index <= number; index++) {
+    sum += BigInt(index) ** BigInt( index)
+  }
+  // get the last digits
+  const strSum = sum.toString()
+  const indexLastDigits = strSum.length-lastDigits
+
+  return strSum.substring(indexLastDigits)
 };
 
 ownPower(10, 3);
@@ -95,7 +136,21 @@ Since 10! === 3628800 and you sum 3 + 6 + 2 + 8 + 8 + 0 + 0
 ***** */
 
 const digitSum = (n) => {
-  // YOUR CODE HERE...
+  let digitSum = 0
+  let sum = BigInt(1) // 1 because we multiply this later
+
+  // get the factorial sum by accumulating the multiplication
+  for (let index = 1; index <= n; index++) {
+    sum *= BigInt(index)
+  }
+  const strSum = sum.toString()
+  
+  // add up the digits of the sum number 
+  for (let index = 0; index < strSum.length; index++) {
+    digitSum += parseInt(strSum[index])
+  }
+
+  return digitSum
 };
 
 digitSum(10);
@@ -118,7 +173,20 @@ Because the 12th index in the Fibonacci sequence is 144, and 144 has three digit
 ***** */
 
 const fibIndex = (n) => {
-  // YOUR CODE HERE...
+  // offset index due to 1,1 being first two elements of fibonacci sequence
+  let index = 3 
+  let current = 1
+  let next = 1
+
+  while (true) {
+    let fib = current + next
+    if(fib.toString().length >= n) return index
+    
+    // shift fibonacci numbers
+    current = next
+    next = fib
+    index++
+  }
 };
 
 fibIndex(3);
