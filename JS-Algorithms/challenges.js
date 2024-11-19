@@ -180,7 +180,9 @@ const fibIndex = (n) => {
 
   while (true) {
     let fib = current + next
-    if(fib.toString().length >= n) return index
+    if(fib.toString().length >= n) {
+      return index;
+    }
     
     // shift fibonacci numbers
     current = next
